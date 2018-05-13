@@ -1,0 +1,36 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{ .Hugo.Generator }}
+
+{{ if eq .URL "/" }}
+<title>{{ .Title }}</title>
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:type" content="website">
+{{ else }}
+<title>{{ .Title }} - {{ .Site.Title }}</title>
+<meta property="og:title" content="{{ .Title }} - {{ .Site.Title }}">
+{{ end }}
+
+{{ if eq .URL "/" }}
+<meta property="description" content="{{ .Site.Params.description }}">
+{{ else }}
+  {{ if .Description }}
+  <meta property="description" content="{{ .Description }}">
+  {{ end }}
+{{ end }}
+
+{{ if .Keywords }}
+<meta property="keywords" content ="{{ delimit .Keywords ", " }}">
+{{ end }}
+
+{{ if .RSSLink }}
+<link href="{{ .RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+{{ end }}
+
+<!--Fonts-->
+<link href="https://fonts.googleapis.com/css?family=Average+Sans|Jaldi:700|Raleway" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+crossorigin="anonymous">
+<!--CSS-->
+<link rel="stylesheet" href="/css/main.css" media="all">
+<link rel="stylesheet" href="/css/custom.css" media="all">

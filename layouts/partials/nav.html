@@ -1,0 +1,14 @@
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <span class="it">IT</span>
+    <span class="depends text-lowercase">depends</span>
+  </a>
+
+  <ul class="nav-links">
+    {{ range .Site.Menus.main }}
+    <li>
+      <a href="{{ .URL }}">{{ .Name }}</a>
+    </li>
+    {{ end }}
+  </ul>
+</nav>

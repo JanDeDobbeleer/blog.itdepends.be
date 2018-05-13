@@ -1,0 +1,19 @@
+{{ partial "header.html" . }}
+
+<main class="content">
+
+  <div class="list">
+    {{ range (.Paginate ((where .Data.Pages "Type" "post").GroupByDate "2006")).PageGroups }}
+    {{ range .Pages }}
+
+    {{ partial "list-item.html" . }}
+
+    {{ end }}
+    {{ end }}
+  </div>
+
+  {{ partial "pagination.html" . }}
+
+</main>
+
+{{ partial "footer.html" . }}

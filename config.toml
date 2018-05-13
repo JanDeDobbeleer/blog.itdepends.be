@@ -1,0 +1,39 @@
+languageCode = "en-us"
+title = "IT depends - blog"
+preserveTaxonomyNames = true
+rssLimit = 10
+paginate = 5
+pygmentsCodefences = true
+pygmentsStyle = "native"
+
+[taxonomies]
+    category = "categories"
+    tag = "tags"
+
+[permalinks]
+    post = "/:slug/"
+    page = "/:slug/"
+
+[[menu.main]]
+    name = "About"
+    url = "https://itdepends.be"
+    weight = -110
+
+[[menu.main]]
+    name = "Tags"
+    url = "/tags"
+    weight = -120
+
+[[menu.main]]
+    name = "Categories"
+    url = "/categories"
+    weight = -130
+
+[params]
+    description = ""
+
+    [params.logo]
+    url = "logo.png"
+    width = 50
+    height = 50
+    alt = "Logo"
