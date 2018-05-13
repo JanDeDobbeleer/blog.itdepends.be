@@ -1,0 +1,12 @@
+    <nav class="list-item">
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+      <p class="list-item-read-time">
+        <i class="far fa-clock"></i><span class="list-item-read-time">{{ .ReadingTime }} minute read</span>
+      </p>
+      <p class="list-item-description">
+        {{ .Description }}
+      </p>
+      <p class="list-item-date">
+          {{ .Date.Format "2006-01-02" }}
+      </p>
+    </nav>

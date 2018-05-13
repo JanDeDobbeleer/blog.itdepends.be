@@ -1,0 +1,29 @@
+.list-item-date {
+    color: #9ba1a6;
+    font-family: "Average Sans";
+    font-size: 20px;
+    margin-bottom: 60px;
+  }
+
+.list-item-read-time {
+    margin-top: 10px;
+}
+
+span.list-item-read-time {
+    margin-left: 10px;
+}
+
+.it {
+    font-family: 'Jaldi', sans-serif;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.depends {
+    font-family: 'Raleway', sans-serif;
+    text-transform: none;
+}
+
+.taxonomy-list {
+    margin-right: 10px;
+}
