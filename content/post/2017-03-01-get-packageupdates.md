@@ -36,4 +36,4 @@ After you log in, `Save-PackageUpdates` will fetch the update information and sa
 
 If you're like me and always forget to check for updates, **make sure to give this a go**. And if you'd like to extend it's functionality, you can find the source code on the usual spot ;-)
 
-<a class="github_link" href="https://github.com/JanJoris/Get-PackageUpdates" target="_blank" >Source code</a>
+<a class="github_link" href="https://github.com/JanDeDobbeleer/Get-PackageUpdates" target="_blank" >Source code</a>

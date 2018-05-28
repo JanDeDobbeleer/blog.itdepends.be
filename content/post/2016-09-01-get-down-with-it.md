@@ -26,4 +26,4 @@ In fact, I enjoyed using this so much I decided to integrate it into <a href="ht
 
 Happy CLI-ing!
 
-<a class="github_link" href="https://github.com/JanJoris/posh-with" target="_blank" >Source code</a>
+<a class="github_link" href="https://github.com/JanDeDobbeleer/posh-with" target="_blank" >Source code</a>
