@@ -112,4 +112,4 @@ The only thing we still need to do is select a CI service of choice. I made sure
 
 Have a look at the source code for all the info and the build files for the two services. Enjoy!
 
-<a class="github_link" href="https://github.com/JanJoris/java-docker-setup" target="_blank" >Source code</a>
+<a class="github_link" href="https://github.com/JanDeDobbeleer/java-docker-setup" target="_blank" >Source code</a>

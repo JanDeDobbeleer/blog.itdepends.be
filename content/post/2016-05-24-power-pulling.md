@@ -31,4 +31,4 @@ The problem is, GitHub does not support the `--ff-only` flag for resolving pull 
 
 In this situation, there are two thing you can do. Find a tool that works, or build your own. I found a few tools that have the ability to talk to the GitHub API, like gitsome or posh-github, but neither of them really did what I was looking for. **So I built my own**. Straight from the PowerShell console, this tool allows me to review a pull request using the defined difftool, resolve pull a request once I deem it worthy and create a new pull request from the branch I’m currently working on. Meet PS-GitHubPullRequest (I might have to work on that name).
 
-<a class="github_link" href="https://github.com/JanJoris/PS-GitHubPullRequest" target="_blank" >Source code</a>
+<a class="github_link" href="https://github.com/JanDeDobbeleer/PS-GitHubPullRequest" target="_blank" >Source code</a>

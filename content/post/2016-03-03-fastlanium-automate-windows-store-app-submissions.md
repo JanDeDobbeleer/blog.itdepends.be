@@ -31,4 +31,4 @@ In order to provide everyone with the latest changes we decided to automatically
 
 Nothing better than a good flu to get rid of some frustrations. Or at least, that must have been what I thought when I wrote Fastlanium in between my power naps. The tool uses Selenium together with the Chrome driver to create a submission, upload the builds to the store and press the red button. No real magic but someone had to do it. With this tool I can now use my CI instance to do a deploy every week with the latest changes. Let's hope Microsoft wakes up and will allow store uploads through an API soon, and in the meantime, try Fastlanium.
 
-<a class="github_link" href="https://github.com/JanJoris/Fastlanium" target="_blank" >Source code</a>
+<a class="github_link" href="https://github.com/JanDeDobbeleer/Fastlanium" target="_blank" >Source code</a>

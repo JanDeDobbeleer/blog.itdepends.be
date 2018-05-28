@@ -26,7 +26,7 @@ We want to proceed with safety, which means no-one should have to worry about me
 
 Luckily for us, GitHub provides a rich API that allows to interact with basically everything. Creating an automated review tool starts by setting up a small API where GitHub can post events to. Now, I've tried numerous languages and frameworks, and when it comes to quickly creating a web API, I always go to <a href="https://expressjs.com/" target="_blank">Express</a> in nodejs. You can **hate on Javascript** all you want, but even in a swamp there are flowers to be found.
 
-Thanks to an active community, we can make use of two modules to help us out. <a href="https://github.com/alexcurtis/express-x-hub" target="_blank">express-x-hub</a> to assist in validate requests, and <a href="https://github.com/pksunkara/octonode" target="_blank">octonode</a> to interact with the GitHub API. We start out simple by creating an endpoint to integrate with GitHub and test the API. I created a <a href="https://gist.github.com/JanJoris/71180e7346573e2313480adf817f6107" target="_blank">gist</a> that contains all the code needed to follow along. Let's go over the files and their responsibilities.
+Thanks to an active community, we can make use of two modules to help us out. <a href="https://github.com/alexcurtis/express-x-hub" target="_blank">express-x-hub</a> to assist in validate requests, and <a href="https://github.com/pksunkara/octonode" target="_blank">octonode</a> to interact with the GitHub API. We start out simple by creating an endpoint to integrate with GitHub and test the API. I created a <a href="https://gist.github.com/JanDeDobbeleer/71180e7346573e2313480adf817f6107" target="_blank">gist</a> that contains all the code needed to follow along. Let's go over the files and their responsibilities.
 
 As we're dealing with a nodejs project, we've got our obligatory `package.json` file containing the project description and dependencies. I prefer <a href="https://yarnpkg.com/en/" target="_blank">yarn</a> over npm, so let's meet these dependencies using `yarn install` to download and install these locally. There are two other files to be found, `app.js` contains the logic to run our express API and `.env` holds the environment variables we do not wish to expose in the source code (you want to add this to your `.gitignore` file). For your enjoyment, I also included the `launch.json` debug settings for Visual Studio Code.
 
@@ -62,11 +62,7 @@ GitHub provides 4 types of commit statuses: pending, success, error, or failure.
 
 Now, when you push a branch in the repository you added the webhook to and create a pull request, you will see the data being posted to your API. If you did everything according to the sample, the API will immediately mark the commit as `failure` and GitHub will display the message `Oh no, this commit looks bad!`. The cool thing is, now you can **mark this check as required** in the repository's settings to enforce the rule and not allow anyone to bypass this check. Navigate to _Branches/Protected branches/\<branch\>/edit/Require status checks to pass before merging/\<select github-tools/test\>_.
 
-Using this sample, you can extend it towards whatever use-cases your team could benefit from. You can find the implementation our team currently uses in my <a href="<https://github.com/JanJoris/github-tools>
+Using this sample, you can extend it towards whatever use-cases your team could benefit from. You can find the implementation our team currently uses in my <a href="<https://github.com/JanDeDobbeleer/github-tools>
 " target="_blank">github-tools</a> repository. We currently have 2 use-cases, one is to check for any fixup or squash commits in the pull requests, the other one will look for changes in `requirements.txt` files and make sure everyone neatly follows <a href="<https://www.python.org/dev/peps/pep-0440/>
 " target="_blank">PEP440</a> rules and properly sets dependencies. As the possibilities are endless, I can't wait to see what you'll come up with, so make sure to let me know in the comments or on <a href="<https://twitter.com/jan_joris>
 " target="_blank">Twitter</a>!
-
-
-
-
