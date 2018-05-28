@@ -45,62 +45,62 @@ I quickly got annoyed by the default console Bash uses. Just like PowerShell, it
 
 <img src="https://www.herebedragons.io/images/conemusettings.png" alt="conemusettings" width="600" class="alignnone size-medium wp-image-1132" />
 
-While messing around with Bash, I noticed <a href="https://github.com/JanJoris/oh-my-posh" target="_blank">oh-my-posh</a> had it's color settings a bit wonky. In order to get everything aligned and looking crisp, I had to <a href="https://github.com/JanJoris/oh-my-posh/commit/bb231e51a3f56928ef2b6ed5967e13d1f3de1cca" target="_blank">adjust those</a>. If you want my color scheme for you convenience, you find it <a href="https://gist.github.com/JanJoris/71c9f1361a562f337b855b75d7bbfd28" target="_blank">here</a>. The font I use is Meslo LG M, there is a great <a href="https://github.com/ryanoasis/nerd-fonts" target="_blank">repository</a> containing a wide variety of extended Powerline fonts.
+While messing around with Bash, I noticed <a href="https://github.com/JanDeDobbeleer/oh-my-posh" target="_blank">oh-my-posh</a> had it's color settings a bit wonky. In order to get everything aligned and looking crisp, I had to <a href="https://github.com/JanDeDobbeleer/oh-my-posh/commit/bb231e51a3f56928ef2b6ed5967e13d1f3de1cca" target="_blank">adjust those</a>. If you want my color scheme for you convenience, you find it <a href="https://gist.github.com/JanDeDobbeleer/71c9f1361a562f337b855b75d7bbfd28" target="_blank">here</a>. The font I use is Meslo LG M, there is a great <a href="https://github.com/ryanoasis/nerd-fonts" target="_blank">repository</a> containing a wide variety of extended Powerline fonts.
 
 Getting started with Bash also means we have to make sure it's setup properly. Let's create the root password before doing anything else. Start Bash using ConEmu or press WIN and type `Bash` to see and start `Bash on Ubuntu on Windows`. If all went according to plan you should be logged in as the user you created which is also added to the sudoers file, meaning we can sudo all over the place (rejoice). Add a root password by typing `sudo passwd`. First, enter the password you created for your user, then enter a root password when you see `Enter new UNIX password:`. Well done, you can now log on as root if needed.
 
 Just like <a href="http://www.hanselman.com/blog/VIDEOHowToRunLinuxAndBashOnWindows10AnniversaryUpdate.aspx" target="_blank">Scott Hanselman</a>, let's start by updating everything we have before continuing. Type `sudo apt update`, enter your password and let it run. Once done we can install all the goodies needed to have a cool prompt. Linux has the advantage of having a lot of great CLI improvements compared to Windows. I created oh-my-posh because I got inspired by tools like <a href="http://zsh.sourceforge.net/" target="_blank">ZSH</a> and <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank">oh-my-zsh</a> so obviously, that's what I'm going to install before continuing. Start off by installing git, ZSH and oh-my-zsh.
 
     $ sudo apt install git zsh
-    $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"    
-    
+    $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
 
 You can now type `zsh` to start the ZSH prompt, improved by oh-my-zsh. Have a look at the repository <a href="https://github.com/robbyrussell/oh-my-zsh/wiki" target="_blank">wiki</a> to see what is available. I use the agnoster theme, you can change the theme by using VIM to edit the `.zshrc` file which lives in your user's home folder: `vim ~/.zshrc`. If you have no idea how to use VIM, now is the time. There are plenty of <a href="http://vim.rtorr.com/" target="_blank">cheat sheets</a> out there. Let's swap the default theme for Agnoster:
 
     ZSH_THEME="agnoster"
-    
+
 
 We want to start ZSH when we start the Bash shell, so let's tell Bash to do so. Use the following command to achieve this:
 
     $ echo 'ZSH' >> ~/.bashrc
-    
+
 
 The subsystem lives next to Windows and has access to the Windows filesystem. It doesn't map onto the Windows filesystem however, meaning you have a different home folder in Linux and in Windows. For me, this is kind of annoying as I want to use Bash on Windows, not somewhere on my machine in an entirely different context. I want to use the same SSH keys, git configuration and other settings on both shells. To achieve this, we have to tell Linux our user's home folder is the home folder we use on Windows (`/mnt/c/Users/<username>`). Edit the `/etc/passwd` file with VIM to change your home folder's location.
 
     $ sudo vim /etc/passwd
-    
+
 
 In my case, I had the following line at the end:
 
     jan:x:1000:1000:"",,,:/home/jan:/usr/bin/Bash
-    
+
 
 You have to look for the one starting with your username. We need to change the `/home/jan` path to our Windows home folder. Alter the line so it looks like this but with your Windows username:
 
     jan:x:1000:1000:"",,,:/mnt/c/Users/Jan:/usr/bin/Bash
-    
+
 
 The last part of this line indicates the shell Linux has to start for your user. You can tell Linux to start ZSH instead of Bash but for some reason this never worked for me. To make sure the settings we just configured are used when we restart our shell, let's transfer all the files from the Linux home folder to our Windows home folder. Beware that if you use Cygwin or Git Bash, this will override those settings so use with caution (or adjust to your needs). Replace the usernames with your own and copy-paste all the files and folders:
 
     $ cp -R /home/jan/. /mnt/c/Users/Jan
-    
+
 
 Use VIM to edit the `~/.zshrc` file and adjust the home location of oh-my-zsh to it's new Windows home folder. Restart the Bash shell to apply all the changes. You notice you are now in your Windows home folder instead of the Linux subsystem. Great. There's only one thing left to do now. When we type `ls` or `cd`, the output and autocomplete looks quite ugly. This is because Windows has no permissions on files and folder apart from admin, meaning everything will be defined as `STICKY_OTHER_WRITABLE`, `OTHER_WRITABLE` and `EXEC` when it comes to lS colors. To alter this we need to override these settings by creating a .dircolors file in our home directory with adjusted values. Create the file with the current settings:
 
     $ dircolors -p > ~/.dircolors
-    
+
 
 Now, edit the `.dircolors` file with VIM and look for the following settings. Change the values as illustrated below.
 
     STICKY_OTHER_WRITABLE 01;34
     OTHER_WRITABLE 01;34
     EXEC 01;37
-    
+
 
 Lastly, we need to tell ZSH to use the ls colors for completion, add the following line at the end of your `~/.zshrc` file using any editor of choice.
 
     zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-    
+
 
 Restart the Bash shell and the result should look like this. I have almost the same UI on PowerShell (left) and Bash (right), which makes it nice to work with. Who said we can't have a nice console on Windows? I can't wait to mess around with it!
 

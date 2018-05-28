@@ -63,6 +63,6 @@ Lastly, we need to format and publish the results.
 
 > There's just one caveat here. As Keith Dahlby found out when we added this to <a href="https://github.com/dahlbyk/posh-git/pull/461#issuecomment-286946980" target="_blank">posh-git</a>, **secure variables do not work on pull requests**. This is done to avoid anyone decrypting and displaying that value and run away with your online identity, maybe ending up dating your wife and feeding your kids (the bastards!). As we don't want that, make sure you either check you have a value in `$ENV:CA_KEY` and replace it with dummy info if not or don't build on PR's.
 
-This example is coming from my <a href="https://github.com/JanJoris/oh-my-posh" target="_blank">oh-my-posh</a> repository, where you can already see a neat Coveralls badge displaying the, somewhat disappointing, code coverage percentage. You can find more info about the module when you visit the project on GitHub. And yes, I do see the irony in having a module about code coverage with 0 tests and no lovely badge. It's on my list, ok? Don’t be a dick about it.
+This example is coming from my <a href="https://github.com/JanDeDobbeleer/oh-my-posh" target="_blank">oh-my-posh</a> repository, where you can already see a neat Coveralls badge displaying the, somewhat disappointing, code coverage percentage. You can find more info about the module when you visit the project on GitHub. And yes, I do see the irony in having a module about code coverage with 0 tests and no lovely badge. It's on my list, ok? Don’t be a dick about it.
 
-<a class="github_link" href="https://github.com/JanJoris/coveralls" target="_blank" >Source code</a>
+<a class="github_link" href="https://github.com/JanDeDobbeleer/coveralls" target="_blank" >Source code</a>
