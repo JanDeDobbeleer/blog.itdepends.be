@@ -24,7 +24,8 @@ h6 {
 pre,
 code {
   font-family: 'Roboto Mono', monospace;
-  font-size: 15px;
+  font-size: 14px;
+  color: black
 }
 
 code {
@@ -431,11 +432,6 @@ blockquote {
 @media (min-width: 600px) {
   code {
     padding: 2px 4px;
-  }
-
-  pre,
-  code {
-    font-size: 17px;
   }
 
   .header {
