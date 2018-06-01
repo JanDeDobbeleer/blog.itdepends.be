@@ -44,7 +44,7 @@ The advantages are interesting as we can now split the Swagger specification int
 
 The setup of the project is as follows. The explanation of the components is listed inline, be aware I only listed the parts which need an explanation. Refer to the <a href="https://github.com/JanDeDobbeleer/docops-template-api" target="_blank">repository</a> for a complete overview.
 
-```
+```shell
 .
 ├── definitions // the data model used by the API
 |   ├── model.yaml // model definition
@@ -67,11 +67,11 @@ While this sample contains model, path and parameter definitions in the root of 
 
 To change the spec you can use any editor of choice, I have Visual Studio Code setup together with the <a href="https://marketplace.visualstudio.com/items?itemName=Arjun.swagger-viewer" target="_blank">Swagger Viewer plugin</a>. This way I can work on the spec and have it preview in a tab next to me. In case I need to validate the changes, I can also use the pre-configured `validate` task to quickly get feedback in my editor console. The tasks are added to the project to get you started using Visual Studio Code. If you do, make sure to also add a key binding to spawn the tasks. Open `keybindings.json` and enter the following (change the key combo if needed).
 
-```
-    {
-        "key": "ctrl+shift+r",
-        "command": "workbench.action.tasks.runTask"
-    }
+```json
+{
+    "key": "ctrl+shift+r",
+    "command": "workbench.action.tasks.runTask"
+}
 ```
 
 On top of that, one of my colleagues, Joeri Hendrickx, extended the setup by creating a <a href="https://github.com/JanDeDobbeleer/docops-template-api/blob/master/gulpfile.js#L13" target="_blank">watch function</a> inside the `gulpfile.js` file that automatically reloads changes in Swagger-UI while you adjust files. This way, there's no need for a specific setup and you can use any editor you like. As an extra bonus, it will also display the errors on top of the page.
@@ -86,7 +86,9 @@ The docker image has been extended to also pull in the latest version of Prism a
 
 Starting the mock server prints the available endpoints. You now have the ability to start developing and use the mocked API, or validate your work via <a href="https://www.getpostman.com/" target="_blank">Postman</a>, curl or any http request tool of choice. Using this repository, the curl following command will output a mocked result.
 
-    curl -X GET http://localhost:8010/v1/ping -H 'authorization: Basic trololol'
+```shell
+curl -X GET http://localhost:8010/v1/ping -H 'authorization: Basic trololol'
+```
 
 If for any reason you need to debug inside the container, you can use the `make interactive` command. This will open a shell inside the container for you to mess around in. I never needed it until now, but it's there. Just in case.
 

@@ -34,43 +34,55 @@ Let's start by ensuring we have everything we need to proceed. There are a few d
 
 At this point, we're ready to grab the source code. Do this in your location of choice.
 
-    git clone https://github.com/tootsuite/mastodon.git
+```shell
+git clone https://github.com/tootsuite/mastodon.git
+```
 
 Change to that location and checkout the latest release (1.2.2 at the time of writing).
 
-    cd mastodon
-    git checkout 1.2.2
+```shell
+cd mastodon
+git checkout 1.2.2
+```
 
 Now that we've got all this setup, we can build our containers. There's a useful <a href="https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Docker-Guide.md" target="_blank">guide</a> made by the Mastodon community I suggest you follow. Before we make this available to the outside world, we want to tweak our `.env.production` file to configure the instance. There are a few keys in there we need to adjust, and some we could adjust. In my case, **Mastodon runs as a single user instance**, meaning only one user is allowed in. Nobody can register and the home page redirects to that user's profile instead of the login page. Below are the settings I adjusted, remember I run Mastodon on a subdomain `mastodon.herebedragons.io`, but my user identifies as `@jan@herebedragons.io`. The config changes below illustrate that behavior. If you have no use for that, just leave the `WEB_DOMAIN` key commented out. If you do need it however, you'll still have to enter a redirect rule for your root domain that points `https://rootdomain/.well-known/host-meta` to `https://subdomain.rootdomain/.well-known/host-meta`. I added a rule on Cloudflare to achieve this, but any approach will do.
 
-    # Federation
-    LOCAL_DOMAIN=herebedragons.io
-    LOCAL_HTTPS=true
+```shell
+# Federation
+LOCAL_DOMAIN=herebedragons.io
+LOCAL_HTTPS=true
 
-    # Use this only if you need to run mastodon on a different domain than the one used for federation.
-    # Do not use this unless you know exactly what you are doing.
-    WEB_DOMAIN=mastodon.herebedragons.io
+# Use this only if you need to run mastodon on a different domain than the one used for federation.
+# Do not use this unless you know exactly what you are doing.
+WEB_DOMAIN=mastodon.herebedragons.io
 
-    # Registrations
-    # Single user mode will disable registrations and redirect frontpage to the first profile
-    SINGLE_USER_MODE=true
+# Registrations
+# Single user mode will disable registrations and redirect frontpage to the first profile
+SINGLE_USER_MODE=true
+```
 
 As we can't run a site without configuring SSL, we'll use Let's Encrypt to secure nginx. Follow the brilliant guide over at <a href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04" target="_blank">Digital Ocean</a> and report back for the last part. Once setup, we need to configure nginx (and the DNS settings for your domain) to make Mastodon available for the world to enjoy. You can find my settings <a href="https://gist.github.com/JanDeDobbeleer/0b0a425e8639d980bc430ea22c14710c" target="_blank">here</a>. Just make sure to adjust the key file's name and DNS settings. As I redirect all `http` traffic to `https` using Cloudflare, I did not bother to add port `80` to the config, be sure to add it if needed.
 
 Alright, we're ready to **start exploring the fediverse!** Make sure to restart nginx to apply the latest settings using `sudo service nginx restart` and update the containers to reflect your settings via `docker-compose up -d`. If all went according to plan, you should see your brand new shiny instance on your domain name. Create your first user and get ready to toot! In case you did not bother to add an smtp server, manually confirm your user:
 
-    docker-compose run --rm web rails mastodon:confirm_email USER_EMAIL=alice@alice.com
+```shell
+docker-compose run --rm web rails mastodon:confirm_email USER_EMAIL=alice@alice.com
+```
 
 And make sure to give yourself ultimate admin powers to be able to configure your intance:
 
-    docker-compose run --rm web rails mastodon:make_admin USERNAME=alice
+```shell
+docker-compose run --rm web rails mastodon:make_admin USERNAME=alice
+```
 
 Updating is a straightforward process too. Fetch the latest changes from the remote, checkout the tag you want and update your containers:
 
-    docker-compose stop
-    docker-compose build
-    docker-compose run --rm web rails db:migrate
-    docker-compose run --rm web rails assets:precompile
-    docker-compose up -d
+```shell
+docker-compose stop
+docker-compose build
+docker-compose run --rm web rails db:migrate
+docker-compose run --rm web rails assets:precompile
+docker-compose up -d
+```
 
 Happy tooting!

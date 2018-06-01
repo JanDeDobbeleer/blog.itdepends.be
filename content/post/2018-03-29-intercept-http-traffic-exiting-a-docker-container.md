@@ -82,7 +82,7 @@ Now, when you up the docker container with compose, you'll see all traffic flowi
 
 When using a `docker-compose.override.yml` file and you've already specified another non-standard `docker-compose` file, make sure to use `-f` twice to load both (or more) settings files. So, imagine your settings file is called `docker-compose.standalone.yml` and you've added all files following this tutorial, the command to up your container becomes:
 
-```bash
+```shell
 docker-compose -f .\docker-compose.standalone.yml -f .\docker-compose.override.yml up
 ```
 
@@ -96,7 +96,7 @@ As I'm running this on Windows, I still had to open up port `8080` to allow the 
 
 In case you want to do this but don't have a Python app using Requests, you can try to add the certificate to the container's OS as I mentioned before. For some reason, I also had to set it on every container start, but that's not too much hassle. Instead of `certificate.py`, create a file called `certificate.sh` with the following content:
 
-```bash
+```shell
 mkdir /usr/local/share/ca-certificates/extra
 cp mitmproxy-ca-cert.pem /usr/local/share/ca-certificates/extra/root.cert.crt
 update-ca-certificates

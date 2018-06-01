@@ -51,51 +51,63 @@ Getting started with Bash also means we have to make sure it's setup properly. L
 
 Just like <a href="http://www.hanselman.com/blog/VIDEOHowToRunLinuxAndBashOnWindows10AnniversaryUpdate.aspx" target="_blank">Scott Hanselman</a>, let's start by updating everything we have before continuing. Type `sudo apt update`, enter your password and let it run. Once done we can install all the goodies needed to have a cool prompt. Linux has the advantage of having a lot of great CLI improvements compared to Windows. I created oh-my-posh because I got inspired by tools like <a href="http://zsh.sourceforge.net/" target="_blank">ZSH</a> and <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank">oh-my-zsh</a> so obviously, that's what I'm going to install before continuing. Start off by installing git, ZSH and oh-my-zsh.
 
-    $ sudo apt install git zsh
-    $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```shell
+$ sudo apt install git zsh
+$ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```
 
 
 You can now type `zsh` to start the ZSH prompt, improved by oh-my-zsh. Have a look at the repository <a href="https://github.com/robbyrussell/oh-my-zsh/wiki" target="_blank">wiki</a> to see what is available. I use the agnoster theme, you can change the theme by using VIM to edit the `.zshrc` file which lives in your user's home folder: `vim ~/.zshrc`. If you have no idea how to use VIM, now is the time. There are plenty of <a href="http://vim.rtorr.com/" target="_blank">cheat sheets</a> out there. Let's swap the default theme for Agnoster:
 
-    ZSH_THEME="agnoster"
-
+```shell
+ZSH_THEME="agnoster"
+```
 
 We want to start ZSH when we start the Bash shell, so let's tell Bash to do so. Use the following command to achieve this:
 
-    $ echo 'ZSH' >> ~/.bashrc
-
+```shell
+$ echo 'ZSH' >> ~/.bashrc
+```
 
 The subsystem lives next to Windows and has access to the Windows filesystem. It doesn't map onto the Windows filesystem however, meaning you have a different home folder in Linux and in Windows. For me, this is kind of annoying as I want to use Bash on Windows, not somewhere on my machine in an entirely different context. I want to use the same SSH keys, git configuration and other settings on both shells. To achieve this, we have to tell Linux our user's home folder is the home folder we use on Windows (`/mnt/c/Users/<username>`). Edit the `/etc/passwd` file with VIM to change your home folder's location.
 
-    $ sudo vim /etc/passwd
-
+```shell
+$ sudo vim /etc/passwd
+```
 
 In my case, I had the following line at the end:
 
-    jan:x:1000:1000:"",,,:/home/jan:/usr/bin/Bash
+```shell
+jan:x:1000:1000:"",,,:/home/jan:/usr/bin/Bash
+```
 
 
 You have to look for the one starting with your username. We need to change the `/home/jan` path to our Windows home folder. Alter the line so it looks like this but with your Windows username:
 
-    jan:x:1000:1000:"",,,:/mnt/c/Users/Jan:/usr/bin/Bash
+```shell
+jan:x:1000:1000:"",,,:/mnt/c/Users/Jan:/usr/bin/Bash
+```
 
+The last part of this line indicates the shell Linux has to start for your user. You can tell Linux to start ZSH instead of Bash but for some reason this never worked for me. To make sure the settings we just configured are used when we restart our shell, let's transfer all the files from the Linux home folder to our Windows home folder. Beware that if you use Cygwin or Git Bash, this will override those settings so use with caution (or adjust to your needs). Replace the usernames with your own
+and copy-paste all the files and folders:
 
-The last part of this line indicates the shell Linux has to start for your user. You can tell Linux to start ZSH instead of Bash but for some reason this never worked for me. To make sure the settings we just configured are used when we restart our shell, let's transfer all the files from the Linux home folder to our Windows home folder. Beware that if you use Cygwin or Git Bash, this will override those settings so use with caution (or adjust to your needs). Replace the usernames with your own and copy-paste all the files and folders:
-
-    $ cp -R /home/jan/. /mnt/c/Users/Jan
-
+```shell
+$ cp -R /home/jan/. /mnt/c/Users/Jan
+```
 
 Use VIM to edit the `~/.zshrc` file and adjust the home location of oh-my-zsh to it's new Windows home folder. Restart the Bash shell to apply all the changes. You notice you are now in your Windows home folder instead of the Linux subsystem. Great. There's only one thing left to do now. When we type `ls` or `cd`, the output and autocomplete looks quite ugly. This is because Windows has no permissions on files and folder apart from admin, meaning everything will be defined as `STICKY_OTHER_WRITABLE`, `OTHER_WRITABLE` and `EXEC` when it comes to lS colors. To alter this we need to override these settings by creating a .dircolors file in our home directory with adjusted values. Create the file with the current settings:
 
+```shell
     $ dircolors -p > ~/.dircolors
-
+```
 
 Now, edit the `.dircolors` file with VIM and look for the following settings. Change the values as illustrated below.
 
+```shell
     STICKY_OTHER_WRITABLE 01;34
     OTHER_WRITABLE 01;34
     EXEC 01;37
-
+```
 
 Lastly, we need to tell ZSH to use the ls colors for completion, add the following line at the end of your `~/.zshrc` file using any editor of choice.
 

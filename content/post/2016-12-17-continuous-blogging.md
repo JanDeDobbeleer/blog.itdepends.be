@@ -34,8 +34,10 @@ With all of this enabled, I was feeling pretty good about my setup. When I work 
 
 A month passed and I almost forgot about the header issue when, by accident, I read a tweet mentioning [Netlify](https://www.netlify.com/) as a hosting solution. I never heard of Netlify before so I set out to **explore that strange new world**. It turns out Netlify can build Jekyll sites out of the box and allows for a ton of tweaks, including custom headers. Normally this would cost you but thanks to the [Open Source plan](https://www.netlify.com/blog/2016/07/28/netlifys-pro-plan-now-free-for-open-source-projects/), you can enjoy all this goodness for free. The setup is a breeze, it's basically just selecting your repository, setting the right build command and you're up and running. If you want to tweak the headers, all you need to do is add a file called `_headers` to your site's root. In Jekyll's case, that would be the `_site` folder. As that one is created at build time, I added that file to the repository root and make Jekyll include it when I'm building the site by modifying the `_config.yml` file.
 
-    include:
-      - _headers
+```yaml
+include:
+  - _headers
+```
 
 But, Netlify has one other advantage. It deploys each branch to its specific environment which allows you to preview the changes before merging to master. As I'm adding headers that restrict access to files other than the site's origin together with specifically allowed locations, this means my pages will look a bit CSS-less when deployed to a domain other than `herebedragons.io`. To remedy this, I added a file called [`netlify.toml`](https://github.com/JanDeDobbeleer/blog/commit/f396b0db953efb01150fe75e1042337368f8803d#diff-5db06fd2327543bbb72119cd1e5761cf) with custom build logic that only copies the `_headers` file to the site's root when in "production" (master branch). For every other branch, it will use the `jekyll build` command which allows for working previews. This way I can write a post and immediately preview it before going live. **How insanely cool is that**?
 

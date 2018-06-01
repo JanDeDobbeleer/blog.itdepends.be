@@ -27,49 +27,59 @@ Now that we are the coolest kids on the block thanks to the WSL, it's possible t
 
 If we want the emulator to work we will need setup a Windows X server to actually see it running. You can install `VcXsrv Windows X Server` using Chocolatey on Windows.
 
-    choco install vcxsrv 
-    
+```shell
+choco install vcxsrv
+```
 
 Next up is telling the WSL which display to use by editing the `.bashrc` file (found in your WSL user's home folder). Add the line `export DISPLAY=:0` so the WSL will use the X Server to propagate graphics to (this will also allow you to get other graphical stuff to work like gitk for example).
 
 Secondly we need some Linux libraries the SDK depends upon. **I added one extra library** compared to Pebble's own guide, `libfreetype6-dev`. When trying to compile after my installation, that lib was missing on my WSL setup, so make sure you have it before continuing.
 
-    sudo apt-get install libsdl1.2debian libfdt1 libpixman-1-0 libfreetype6-dev python-pip python2.7-dev
-    
+```shell
+sudo apt-get install libsdl1.2debian libfdt1 libpixman-1-0 libfreetype6-dev python-pip python2.7-dev
+```
 
 ## Install the SDK
 
 Now that we have all this, we can download the SDK to a destination of choice (you can do this on Windows or the WSL by using wget, just make sure you know where to find it from the WSL afterwards). From this point onwards, **everything we do is in the WSL**. Start by creating a folder where you want to host the SDK and navigate into it to unpack it. Make sure to alter the path to the SDK package if that's not where you downloaded it.
 
-    mkdir ~/pebble-dev/
-    cd ~/pebble-dev/
-    tar -jxf ~/Downloads/pebble-sdk-4.4.1-linux64.tar.bz2
-    
+```shell
+mkdir ~/pebble-dev/
+cd ~/pebble-dev/
+tar -jxf ~/Downloads/pebble-sdk-4.4.1-linux64.tar.bz2
+```
+
 
 Instead of adding the following line to our `.bash_profile` like Pebble tells us to do, let's add it to the `.bashrc` file as that does work (could be due to the fact I use ZSH instead of Bash on the WSL). This will add the SDK location to our path so we can use it.
 
-    export PATH=~/pebble-dev/pebble-sdk-4.4-linux64/bin:$PATH
-    
+```shell
+export PATH=~/pebble-dev/pebble-sdk-4.4-linux64/bin:$PATH
+```
+
 
 Install the Python libraries needed to convert fonts and images from your computer into Pebble resources. Make sure you navigate to the correct folder.
 
-    cd ~/pebble-dev/pebble-sdk-4.4.1-linux64
-    virtualenv --no-site-packages .env
-    source .env/bin/activate
-    pip install -r requirements.txt
-    deactivate
-    
+```shell
+cd ~/pebble-dev/pebble-sdk-4.4.1-linux64
+virtualenv --no-site-packages .env
+source .env/bin/activate
+pip install -r requirements.txt
+deactivate
+```
 
 Almost there now. Inside the SDK there is a file called `_socket.py` in which we need to remove the two lines referencing `TCP_KEEPCNT`. Pay attention to the path, it starts in the `.env` folder. **Make sure you get that right**.
 
-    cd .env/lib/python2.7/site-packages/websocket/_socket.py
-    vim _socket.py
-    
+```shell
+cd .env/lib/python2.7/site-packages/websocket/_socket.py
+vim _socket.py
+```
+
 
 Install the latest SDK and get ready to rock.
 
-    pebble sdk install latest
-    
+```shell
+pebble sdk install latest
+```
 
 ## What now?
 

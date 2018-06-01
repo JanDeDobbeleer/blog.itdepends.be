@@ -64,13 +64,15 @@ Now, **one of the cool parts** I mentioned earlier is that psake allows you to h
 
 You notice that I once again define a default task, this time it builds the production app. If you want to build this, we can do so by typing
 
-    .\psake.ps1 .\flavors.ps1
-
+```shell
+.\psake.ps1 .\flavors.ps1
+```
 
 to build the default task or
 
-    .\psake.ps1 .\flavors.ps1 Beta
-
+```shell
+.\psake.ps1 .\flavors.ps1 Beta
+```
 
 to build the Beta app.
 

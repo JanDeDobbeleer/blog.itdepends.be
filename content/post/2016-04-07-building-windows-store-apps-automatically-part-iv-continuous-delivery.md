@@ -36,92 +36,96 @@ The first file we have to edit is the `Package.appxmanifest` file. This contains
 
 Secondly, we tackle the `Package.StoreAssociation.xml` file. This holds the app and display name. Beware though, when you edit the `ReservedName` property and add something new, this will display the app in the Store with that new name. You will have to publish another, new version with the old name before you can delete the other name from within the Store interface.
 
-    Task Version -Depends VerifyVersionProperties {
-        $appx_file_path = Get-ProjectFilePath -projectName $project_name -fileName 'Package.appxmanifest'
-        $XMLfile = Get-ProjectFileXmlObject -filePath $appx_file_path
-        $version = $XMLfile.Package.Identity.Version
-        Write-Host -Object "Current version number = $version"
-        $major = $version.Split('.')[0]
-        $minor = $version.Split('.')[1]
-        $release = Get-Date -UFormat %j%H
-        $buildNumber = 0
-        $version = "$major.$minor.$release.$buildNumber"
-        Write-Host -Object "Updating appxmanifest file with version number $version" -ForegroundColor DarkCyan
+```powershell
+Task Version -Depends VerifyVersionProperties {
+    $appx_file_path = Get-ProjectFilePath -projectName $project_name -fileName 'Package.appxmanifest'
+    $XMLfile = Get-ProjectFileXmlObject -filePath $appx_file_path
+    $version = $XMLfile.Package.Identity.Version
+    Write-Host -Object "Current version number = $version"
+    $major = $version.Split('.')[0]
+    $minor = $version.Split('.')[1]
+    $release = Get-Date -UFormat %j%H
+    $buildNumber = 0
+    $version = "$major.$minor.$release.$buildNumber"
+    Write-Host -Object "Updating appxmanifest file with version number $version" -ForegroundColor DarkCyan
 
-        #Save the new version number
-        $XMLfile.Package.Identity.Version = $version
-        $XMLfile.Package.Identity.Name = $app_name
-        $XMLfile.Package.Applications.Application.VisualElements.DisplayName = $display_name
-        $XMLfile.Package.PhoneIdentity.PhoneProductId = $product_id
-        $XMLfile.Package.Properties.DisplayName = $display_name
+    #Save the new version number
+    $XMLfile.Package.Identity.Version = $version
+    $XMLfile.Package.Identity.Name = $app_name
+    $XMLfile.Package.Applications.Application.VisualElements.DisplayName = $display_name
+    $XMLfile.Package.PhoneIdentity.PhoneProductId = $product_id
+    $XMLfile.Package.Properties.DisplayName = $display_name
 
-        # set the file as read write and save
-        Set-ItemProperty ($appx_file_path) -Name IsReadOnly -Value $false
-        $XMLfile.save($appx_file_path)
-        Write-Host -Object 'Updated the appxmanifest file' -ForegroundColor DarkCyan
+    # set the file as read write and save
+    Set-ItemProperty ($appx_file_path) -Name IsReadOnly -Value $false
+    $XMLfile.save($appx_file_path)
+    Write-Host -Object 'Updated the appxmanifest file' -ForegroundColor DarkCyan
 
-        $association_file_path = Get-ProjectFilePath -projectName $project_name -fileName 'Package.StoreAssociation.xml'
-        $XMLfile = Get-ProjectFileXmlObject -filePath $association_file_path
-        $XMLfile.StoreAssociation.ProductReservedInfo.MainPackageIdentityName = $app_name
-        $XMLfile.StoreAssociation.ProductReservedInfo.ReservedNames.ReservedName = $display_name
+    $association_file_path = Get-ProjectFilePath -projectName $project_name -fileName 'Package.StoreAssociation.xml'
+    $XMLfile = Get-ProjectFileXmlObject -filePath $association_file_path
+    $XMLfile.StoreAssociation.ProductReservedInfo.MainPackageIdentityName = $app_name
+    $XMLfile.StoreAssociation.ProductReservedInfo.ReservedNames.ReservedName = $display_name
 
-        # set the file as read write and save
-        Set-ItemProperty ($association_file_path) -Name IsReadOnly -Value $false
-        $XMLfile.save($association_file_path)
-        Write-Host -Object 'Updated the store association file' -ForegroundColor DarkCyan
-    }
-
+    # set the file as read write and save
+    Set-ItemProperty ($association_file_path) -Name IsReadOnly -Value $false
+    $XMLfile.save($association_file_path)
+    Write-Host -Object 'Updated the store association file' -ForegroundColor DarkCyan
+}
+```
 
 One of the annoyers and difference with 8.1 apps, is that the last version number has to be 0. I could write another paragraph indicating why **this is a silly feature** but I'm not going to bore you. Instead, I moved the build up by one position. The logic is pretty straightforward, it takes the day number and adds the hour. This way the max number of digits will be 5, which is the limit we have. It also implies a version number (for instance 2.2) should not be used for more than 1 year or you will create same version (or go lower after new years eve). There is no perfect numbering system with only 5 digits. I chose the lesser of two evils. Ideally, MS would allow a nicer way of versioning.
 
 Now that we can do everything to setup continuous delivery, we can edit the `flavors.ps1` file to hold the different versions of the app. To simplify the CI and CD builds I added 2 more Tasks to the `psakefile.ps1`.
 
-    Task CI -Depends Build, Test, Validate
-    Task CD -Depends Version, Build
-
+```powershell
+Task CI -Depends Build, Test, Validate
+Task CD -Depends Version, Build
+```
 
 With these we can edit the `flavors.ps1` file to look like this:
 
-    #requires -Version 1
-    Task Default -Depends ProductionCI
+```powershell
+#requires -Version 1
+Task Default -Depends ProductionCI
 
-    Task ProductionCI {
-      Invoke-psake psakefile.ps1 CI -properties @{
-        'solutionFileName' = 'Dummy.sln'
-        'build_platform' = 'x86'
-        'configuration'  = 'Release'
-        'project_name'   = 'Dummy.UWP.Test'
-      }
-    }
+Task ProductionCI {
+  Invoke-psake psakefile.ps1 CI -properties @{
+    'solutionFileName' = 'Dummy.sln'
+    'build_platform' = 'x86'
+    'configuration'  = 'Release'
+    'project_name'   = 'Dummy.UWP.Test'
+  }
+}
 
-    Task ProductionCD {
-      Invoke-psake psakefile.ps1 CD -properties @{
-        'solutionFileName' = 'Dummy.sln'
-        'build_platform' = 'ARM'
-        'configuration'  = 'Release'
-        'project_name'   = 'Dummy.UWP'
-        'app_name'       = 'Dummy'
-        'product_id'     = '5f99e69a-9f7b-88e4-86aa-c0f67dc5484f'
-        'display_name'   = 'Dummy'
-      }
-    }
+Task ProductionCD {
+  Invoke-psake psakefile.ps1 CD -properties @{
+    'solutionFileName' = 'Dummy.sln'
+    'build_platform' = 'ARM'
+    'configuration'  = 'Release'
+    'project_name'   = 'Dummy.UWP'
+    'app_name'       = 'Dummy'
+    'product_id'     = '5f99e69a-9f7b-88e4-86aa-c0f67dc5484f'
+    'display_name'   = 'Dummy'
+  }
+}
 
-    Task BetaCD {
-      Invoke-psake psakefile.ps1 CD -properties @{
-        'solutionFileName' = 'Dummy.sln'
-        'build_platform' = 'ARM'
-        'configuration'  = 'Release'
-        'project_name'   = 'Dummy.UWP'
-        'app_name'       = 'Dummy Beta'
-        'product_id'     = '5f99e69a-9f7b-88e4-86aa-c0f67dc5484f'
-        'display_name'   = 'Dummy Beta'
-      }
-    }
-
+Task BetaCD {
+  Invoke-psake psakefile.ps1 CD -properties @{
+    'solutionFileName' = 'Dummy.sln'
+    'build_platform' = 'ARM'
+    'configuration'  = 'Release'
+    'project_name'   = 'Dummy.UWP'
+    'app_name'       = 'Dummy Beta'
+    'product_id'     = '5f99e69a-9f7b-88e4-86aa-c0f67dc5484f'
+    'display_name'   = 'Dummy Beta'
+  }
+}
+```
 
 To run one of the builds you can use the same syntax we used for tasks in the `psakefile.ps1`:
 
-    .\psake.ps1 .\flavors.ps1 ProductionCI
-
+```shell
+.\psake.ps1 .\flavors.ps1 ProductionCI
+```
 
 We happily went from one line with a lot of properties, to just 3 parameters. This is what you can use in your CI/CD tool or if you feel like running the tests yourself before pushing your code. I hope you learned something from reading this. Any feedback you have is greatly appreciated, maybe you have a situation that requires something else, or you simply do not agree with what I've created. Either way, **get in touch with me**, I won't bite. Hard.

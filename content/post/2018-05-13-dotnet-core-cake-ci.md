@@ -56,7 +56,7 @@ After installing a bootstrapper, make sure to pin the Cake version. You can do s
 
  With all this in place we have the following files, other than the project files:
 
-```
+```shell
 .
 ├── build.ps1
 ├── build.sh
@@ -82,7 +82,7 @@ RunTarget(target);
 
 You can see we've met the first requirement. We have the ability to define tasks that can contain whatever logic we need. Written entirely in C#, this is a huge advantage and **reduces the startup cost** as a .NET developer. The task called `Default` is the one that runs when no parameters are defined. You can immediately see what it does by using the bootstrapper in your CLI tool of choice: `./build.ps1` (but seriously, use <a href="https://conemu.github.io/" target="_blank">ConEmu</a>). The output looks like this:
 
-```
+```shell
 Preparing to run build script...
 Running build script...
 
@@ -152,7 +152,7 @@ What might also be good to know is that Resharper in Visual Studio provides supp
 
 To use these tools in our Cake script, we need a few dependencies. First of all, and maybe that's not at all a problem in your case, we need the <a href="https://chocolatey.org/packages/visualstudio2017buildtools/15.2.26430.20170605" target="_blank">Visual Studio build tools</a> and enable DotNet Core suppport. As **a developer who only uses Visual Studio Code**, I did not have these preinstalled, causing a lot of pain and unclear errors. So, if you're like me, install these on your host or build machine if that's not already the case. Secondly we can make use of a Cake plugin called, you guessed it, <a href="https://cakebuild.net/dsl/resharper/" target="_blank">Resharper</a>. To include it, add the following line on top of your `build.cake` script. This will make the bootstrapper resolve the dependency when running Cake.
 
-```
+```shell
 #tool "nuget:https://www.nuget.org/api/v2?package=JetBrains.ReSharper.CommandLineTools&version=2018.1.0"
 ```
 
@@ -194,7 +194,7 @@ We can add another interesting tool caled DependenciesAnalyser. It will look at 
 
 **EDIT:** It seems this makes the UNIX builds <a href="https://ci.appveyor.com/project/JanJoris/dotnet-core-sample/build/1.0.18/job/ijjicjy5joieu8jn" target="_blank">fail</a>. I created an <a href="https://github.com/joaoasrosa/dotnet-project-dependencies-analyser/issues/12" target="_blank">issue</a> on the project to remind myself to have a look. For the time being I removed the task from the sample.
 
-```
+```shell
 ========================================
 Analyse-Dependencies
 ========================================
@@ -215,6 +215,7 @@ xunit.runner.visualstudio is on version 2.3.1. The dependency is up-to-date.
 
 Finished executing task: Analyse-Dependencies
 ```
+
 For convenience we can group these as one Task, to facilitate running the checks separately when needed.
 
 ```csharp
@@ -224,6 +225,7 @@ Task("Validate")
     .IsDependentOn("DupFinder")
     .IsDependentOn("InspectCode");
 ```
+
 ##  Run unit tests and upload coverage
 
 Writing unit tests has always been a pleasure on DotNet. My base setup consists of a few winners (_opinion_, it's my blog after all) like <a href="https://xunit.github.io/" target="_blank">xUnit</a> and <a href="https://fluentassertions.com/" target="_blank">Fluent Assertions</a>. Creating a test project can be done using the `dotnet new xunit` command, and installing packages follows the `dotnet add package FluentAssertions` syntax. You can run the tests using `dotnet test`. A sample setup and explanation can be found on <a href="https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test" target="_blank">Microsoft's website</a> if you need a more in-depth introduction.
@@ -238,6 +240,7 @@ Task("Test")
     DotNetCoreTest("./Test/Test.csproj");
 });
 ```
+
 Now, this gives us the ability to run unit tests, but how about calculating code coverage? It turns out there's an MSBuild extension that enables just that. It's called <a href="https://github.com/tonerdo/coverlet" target="_blank">coverlet</a> and you can add it as a nuget package to your test project: `dotnet add package coverlet.msbuild`. To use its functionality, we need to add a few additional parameters to the `Test` task.
 
 ```csharp
@@ -327,6 +330,7 @@ script:
   - ./build.sh --target=CI-UNIX
 
 ```
+
 If you're curious about the output or build time, you can have a look at the project on <a href="https://ci.appveyor.com/project/JanJoris/dotnet-core-sample" target="_blank">Appveyor's</a> or <a href="https://travis-ci.org/JanDeDobbeleer/dotnet-core-sample" target="_blank">Travis'</a> website.
 
 This is as far as I wanted to go with this. I'll try to keep the project up-to-date with interesting add-ons, or maybe you know of some improvement and would like to propose a PR? Do not hesitate to get in touch!

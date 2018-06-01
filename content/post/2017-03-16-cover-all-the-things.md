@@ -42,24 +42,30 @@ PowerShell has an awesome testing tool called <a href="https://github.com/pester
 
 First off, we need a key to push the results to Coveralls. Make sure to create a <a href="https://ci.appveyor.com/tools/encrypt" target="_blank">secure variable</a> using the Coveralls API token for your repository.
 
-    environment:
-        CA_KEY:
-          secure: yyBVxcqc8JCSyOJf5I8ufwmwjkgMxouJ1ZyuCkAXdffDDU2VfZCZHK9lkHeph3SM
+```yaml
+environment:
+    CA_KEY:
+      secure: yyBVxcqc8JCSyOJf5I8ufwmwjkgMxouJ1ZyuCkAXdffDDU2VfZCZHK9lkHeph3SM
+```
 
 Secondly, we need to resolve a few dependencies.
 
-    before_test:
-      - ps: Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-      - ps: Install-Module Coveralls -MinimumVersion 1.0.5 -Scope CurrentUser
-      - ps: Import-Module Coveralls
+```yaml
+before_test:
+  - ps: Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+  - ps: Install-Module Coveralls -MinimumVersion 1.0.5 -Scope CurrentUser
+  - ps: Import-Module Coveralls
+```
 
 It could be you'll also need the nuget provider, if you'd see an error indicating this, just prepend `- ps: Get-PackageProvider -Name Nuget -Force` to the `before_test` section.
 
 Lastly, we need to format and publish the results.
 
-    test_script:
-      - ps: $coverageResult = Format-Coverage -Include @('Helpers\PoshGit.ps1','Helpers\Prompt.ps1','install.ps1') -CoverallsApiToken $ENV:CA_KEY -BranchName $ENV:APPVEYOR_REPO_BRANCH
-      - ps: Publish-Coverage -Coverage $coverageResult
+```yaml
+test_script:
+  - ps: $coverageResult = Format-Coverage -Include @('Helpers\PoshGit.ps1','Helpers\Prompt.ps1','install.ps1') -CoverallsApiToken $ENV:CA_KEY -BranchName $ENV:APPVEYOR_REPO_BRANCH
+  - ps: Publish-Coverage -Coverage $coverageResult
+```
 
 > There's just one caveat here. As Keith Dahlby found out when we added this to <a href="https://github.com/dahlbyk/posh-git/pull/461#issuecomment-286946980" target="_blank">posh-git</a>, **secure variables do not work on pull requests**. This is done to avoid anyone decrypting and displaying that value and run away with your online identity, maybe ending up dating your wife and feeding your kids (the bastards!). As we don't want that, make sure you either check you have a value in `$ENV:CA_KEY` and replace it with dummy info if not or don't build on PR's.
 

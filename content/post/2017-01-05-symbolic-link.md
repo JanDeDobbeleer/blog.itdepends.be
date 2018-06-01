@@ -27,7 +27,7 @@ When we leave the dark ages we find that PowerShell can also create symbolic lin
 
 ```powershell
 function New-Symlink {
-    param(        
+    param(
         [Parameter(Mandatory = $true)]
         [string]
         $Source,
@@ -40,6 +40,7 @@ function New-Symlink {
 
 New-Alias -Name sym -Value New-Symlink
 ```
+
 The only caveat here is that you need to execute this in an elevated prompt. But don't worry, you'll be greeted with a nice little warning in case you forgot about that.
 
 So, which files or folders have I created symlinks for? My `$profile`, `.gitconfig` and `ConEmu.xml` files are all symlinked. This way they can always **stay up-to-date between my machines and safely stored in the cloud** at all times. I wanted to link my `.ssh` folder too coming from <a href="https://keybase.io" target="_blank">keybase.io</a>'s file storage, but as that's mounted by my local user, the elevated prompt can't find that path. Good for security, less so for my convenience :-)

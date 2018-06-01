@@ -24,12 +24,16 @@ Getting the chocolatey information turned out to be a bit tricky, as **it doesn'
 
 There's just one little problem. Retrieving the information takes a while. **As nobody feels like waiting every time they start a PowerShell session**, we need a different way to fetch and display the information. The solution is to make sure the module gets and saves this information on startup so we can use that to print it when starting a session. I tried using the `Register-ScheduledJob` cmdlet, but I never got that to work. Thankfully, we can still use some old tricks to run scripts at logon. All you need to do, is create a shortcut under `shell:startup` with the following content:
 
-    C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle Hidden -Command "Save-PackageUpdates"
+```shell
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle Hidden -Command "Save-PackageUpdates"
+```
 
 Once that's created, make sure to install the module using `Install-Module get-packageupdates -Scope CurrentUser`. Then, alter your `$PROFILE` to include the logic:
 
-    Import-Module get-packageupdates
-    Write-PackageUpdates
+```powershell
+Import-Module get-packageupdates
+Write-PackageUpdates
+```
 
 
 After you log in, `Save-PackageUpdates` will fetch the update information and save it to a file called `~\.updateInfo`. Once you start a new PowerShell session, the file contents will be read and printed if they are available. It takes about a minute to get the information, so take that into account. I start a lot of sessions throughout the day, so I'm sure to see the information at least a few times and not forget to update my packages.
