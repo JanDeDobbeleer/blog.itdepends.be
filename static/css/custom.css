@@ -43,3 +43,67 @@ span.list-item-read-time {
     padding-right: 5px;
     font-size: x-large;
 }
+
+/* ISSO styling */
+
+.article-comments {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.auth-section {
+    margin-top: 10px;
+}
+
+
+.input-wrapper input[name="email"] {
+    display: none;
+}
+
+.input-wrapper input[name="website"] {
+    display: none;
+}
+
+.isso-postbox .form-wrapper .auth-section .post-action input {
+    border: 1px solid #3B6E80 !important;
+    background-color: #3B6E80 !important;
+    color: white;
+    box-shadow: none !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.isso-postbox .form-wrapper .auth-section .input-wrapper input {
+    border: 1px solid #3B6E80 !important;
+    box-shadow: none !important;
+}
+
+#isso-thread .textarea:focus, #isso-thread input:focus {
+    border-color: #3B6E80 !important;
+}
+
+.isso-postbox .form-wrapper .textarea {
+    margin: 0 0 .3em;
+    padding: .4em .8em;
+    border-radius: 3px;
+    background-color: #fff;
+    border: 1px solid #3B6E80 !important;
+    box-shadow: none !important;
+}
+
+.isso-comment-footer a {
+    color: #3B6E80 !important;
+}
+
+.isso-comment div.avatar svg, .isso-postbox .avatar svg {
+    box-shadow: none !important;
+}
+
+.isso-comment-footer a:hover {
+    color: grey !important;
+    text-shadow: none !important;
+}
+
+section#isso-thread {
+    margin-bottom: 50px !important;
+}
