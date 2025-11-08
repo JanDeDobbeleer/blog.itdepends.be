@@ -108,8 +108,8 @@ These helpers remove the friction of remembering git commands and let me focus o
 - Using a repo-branch naming style makes it obvious what each workspace is for and safe to delete later.
 - The Nushell and PowerShell variants behave the same; only the shell syntax differs.
 
-### Powershell
-
+{{% tabs %}}
+{{% tab "PowerShell" %}}
 ```powershell
 $env:AGENTS_WORKTREES_PATH="D:/worktrees"
 
@@ -161,9 +161,8 @@ function Remove-Worktree {
     Write-Host "Worktree and branch '$BranchName' removed." -ForegroundColor Green
 }
 ```
-
-### Nushell
-
+{{< /tab >}}
+{{% tab "Nushell" %}}
 ```nu
 $env.AGENTS_WORKTREES_PATH = "d:/worktrees"
 
@@ -205,6 +204,8 @@ def "git rmwt" [branch_name: string] {
     print $"Worktree and branch '($branch_name)' removed."
 }
 ```
+{{< /tab >}}
+{{% /tabs %}}
 
 ## The Benefits
 
