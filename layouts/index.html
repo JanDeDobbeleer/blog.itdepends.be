@@ -3,7 +3,8 @@
 <main class="content">
 
   <div class="list">
-    {{ range (.Paginate ((where .Data.Pages "Type" "post").GroupByDate "2006")).PageGroups }}
+    {{ $posts := where .Site.RegularPages "Section" "post" }}
+    {{ range (.Paginate (($posts).GroupByDate "2006")).PageGroups }}
     {{ range .Pages }}
 
     {{ partial "list-item.html" . }}
