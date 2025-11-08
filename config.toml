@@ -2,7 +2,7 @@ languageCode = "en-us"
 title = "IT depends - blog"
 preserveTaxonomyNames = true
 rssLimit = 10
-paginate = 5
+pagination.pagerSize = 5
 pygmentsCodefences = true
 pygmentsStyle = "emacs"
 
@@ -37,3 +37,10 @@ pygmentsStyle = "emacs"
     width = 50
     height = 50
     alt = "Logo"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+
