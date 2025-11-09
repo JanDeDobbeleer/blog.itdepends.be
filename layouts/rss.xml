@@ -12,8 +12,12 @@
     {{ with .OutputFormats.Get "RSS" }}
         {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
     {{ end }}
-    {{ range .Data.Pages }}
-    {{ if eq .Section "post" }}
+    {{ $pages := .Pages }}
+    {{ if .IsHome }}
+      {{ $pages = where .Site.RegularPages "Section" "post" }}
+    {{ end }}
+    {{ range $pages }}
+    {{ if or (not .Section) (eq .Section "post") ($.IsHome) (ne $.Kind "home") }}
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
