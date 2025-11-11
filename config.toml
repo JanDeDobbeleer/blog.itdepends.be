@@ -1,3 +1,4 @@
+baseURL = "https://jandeddobbeleer.github.io/blog.itdepends.be/"
 languageCode = "en-us"
 title = "IT depends - blog"
 preserveTaxonomyNames = true
