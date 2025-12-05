@@ -1,4 +1,4 @@
-baseURL = "https://jandeddobbeleer.github.io/blog.itdepends.be/"
+baseURL = "https://blog.itdepends.be/"
 languageCode = "en-us"
 title = "IT depends - blog"
 preserveTaxonomyNames = true
@@ -6,6 +6,7 @@ rssLimit = 10
 pagination.pagerSize = 5
 pygmentsCodefences = true
 pygmentsStyle = "emacs"
+canonifyURLs = true
 
 [taxonomies]
     category = "categories"
