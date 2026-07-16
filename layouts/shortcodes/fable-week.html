@@ -1,0 +1,191 @@
+<section class="fw" id="fable-week">
+<style>
+.fw{background:#0b0c10;border:1px solid #2a2d35;border-radius:14px;color:#c8ccd4;margin:2.5rem 0;padding:0;overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.fw *{box-sizing:border-box}
+.fw-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem 1rem;padding:1.1rem 1.3rem .2rem}
+.fw-pill{border:1px solid #e8946f66;color:#e8946f;border-radius:999px;padding:2px 9px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.fw-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:.6rem 2rem;padding:.5rem 1.3rem 1rem}
+.fw-big{font-size:2.1rem;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;line-height:1}
+.fw-big small{font-size:.85rem;font-weight:400;color:#7d838f}
+.fw-big .fw-n{display:inline-block;min-width:2ch;transition:color .4s}
+.fw-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:.9rem}
+.fw-btn{cursor:pointer;background:#1c1f27;border:1px solid #3a3e48;border-radius:7px;color:#d6dae2;font:inherit;font-size:13px;padding:6px 12px}
+.fw-btn:hover{border-color:#6b7180;color:#fff}
+.fw-clock{color:#fbf0df;font-size:13px;font-variant-numeric:tabular-nums;min-width:17ch}
+.fw-body{display:flex;flex-wrap:wrap;gap:1rem;padding:0 1.3rem 1rem;align-items:flex-start}
+.fw-col{min-width:0}
+.fw-feed{flex:1.1 1 200px}
+.fw-mid{flex:1.2 1 230px}
+.fw-bars{flex:1 1 150px}
+.fw-h{color:#7d838f;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.55rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fw-h b{color:#c8ccd4;font-weight:700}
+.fw-log{border:1px solid #23262e;border-radius:9px;background:#0e1015;padding:.5rem .65rem;height:192px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.fw-log div{font-size:11px;line-height:1.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fw-log .i{color:#7ec98f}.fw-log .m{color:#b294e0}.fw-log .c{color:#697080}
+.fw-log .t{color:#8b919d}
+.fw-day{display:flex;align-items:center;gap:.55rem;min-height:24px}
+.fw-day em{font-style:normal;color:#7d838f;font-size:11px;width:6ch;flex:none;text-align:right;white-space:nowrap}
+.fw-cells{display:flex;gap:3px;flex-wrap:wrap}
+.fw-c{width:15px;height:15px;border-radius:3px;background:#171a21;border:1px solid #262a33;transition:background .3s,border-color .3s}
+.fw-c.on{border-color:#f5f0e8;animation:fwpulse 1s ease-in-out infinite}
+.fw-c.f{background:#e8946f;border-color:#e8946f}
+.fw-c.s{background:#5fb0d9;border-color:#5fb0d9}
+@keyframes fwpulse{0%,100%{box-shadow:0 0 0 0 rgba(245,240,232,.45)}50%{box-shadow:0 0 0 4px rgba(245,240,232,0)}}
+.fw-cnt{color:#7d838f;font-size:11px;margin-top:.6rem;font-variant-numeric:tabular-nums}
+.fw-cnt b{color:#e4e7ec;font-weight:700}
+.fw-row{display:flex;align-items:center;gap:.55rem;height:24px;font-size:11px}
+.fw-row em{font-style:normal;color:#8b919d;width:6ch;flex:none;text-align:right;white-space:nowrap}
+.fw-bar{flex:1;height:11px;border-radius:3px;background:#171a21;overflow:hidden}
+.fw-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7ec98f,#b294e0);border-radius:3px;transition:width .25s linear}
+.fw-row u{text-decoration:none;color:#c8ccd4;width:3ch;text-align:right;font-variant-numeric:tabular-nums}
+.fw-foot{border-top:1px solid #23262e;color:#7d838f;display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:11px;padding:.7rem 1.3rem .8rem}
+.fw-dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+@media (max-width:640px){.fw-bars{flex-basis:100%}.fw-clock{min-width:0}}
+</style>
+<div class="fw-top">
+  <span class="fw-pill">&#10035; claude code &middot; one week, one backlog</span>
+</div>
+<div class="fw-head">
+  <div class="fw-big"><span class="fw-n" id="fw-n">0</span> <small id="fw-nl">backlog items left</small></div>
+  <div class="fw-ctl">
+    <button type="button" class="fw-btn" id="fw-btn">&#9654; replay the week</button>
+    <span class="fw-clock" id="fw-clock">Wed, Jul 15, 12:00</span>
+  </div>
+</div>
+<div class="fw-body">
+  <div class="fw-col fw-feed">
+    <div class="fw-h">closing feed &middot; <b id="fw-closed">76</b> closed</div>
+    <div class="fw-log" id="fw-log"></div>
+  </div>
+  <div class="fw-col fw-mid">
+    <div class="fw-h">sessions &middot; <b style="color:#e8946f">fable 5</b> drives, <b style="color:#5fb0d9">sonnet 5</b> builds</div>
+    <div id="fw-days"></div>
+    <div class="fw-cnt">sessions <b id="fw-sess">43</b>/43 &middot; subagents <b id="fw-sub">37</b> &middot; commits <b id="fw-com">171</b></div>
+  </div>
+  <div class="fw-col fw-bars">
+    <div class="fw-h">&rarr; closed per day</div>
+    <div id="fw-daybars"></div>
+  </div>
+</div>
+<div class="fw-foot">
+  <span><span class="fw-dot" style="background:#e8946f"></span>fable 5 session</span>
+  <span><span class="fw-dot" style="background:#5fb0d9"></span>sonnet 5 session</span>
+  <span><span style="color:#7ec98f">&#10003;</span> issue closed</span>
+  <span><span style="color:#b294e0">&#8648;</span> PR merged</span>
+  <span>replayed from real transcripts &amp; GitHub events</span>
+</div>
+<script>
+(function () {
+  var D = {"end":10800,"days":["Wed 08","Thu 09","Fri 10","Sat 11","Sun 12","Mon 13","Tue 14","Wed 15"]};
+  D.sessions = [[420,13,"f",0],[441,27,"f",0],[516,4,"f",0],[532,45,"f",0],[779,8,"f",0],[808,26,"f",0],[1231,80,"f",0],[1869,32,"f",5],[1967,27,"f",2],[2140,79,"f",7],[2728,22,"f",0],[2739,8,"f",0],[2826,25,"f",0],[3338,12,"f",0],[3782,15,"f",0],[4818,2,"f",0],[5006,27,"f",0],[5008,16,"f",1],[5540,6,"f",0],[6400,13,"f",0],[6406,18,"f",1],[6771,5,"f",3],[7874,4,"s",0],[7910,9,"s",0],[7973,7,"s",0],[7975,8,"s",0],[8197,5,"f",0],[9057,33,"f",0],[9127,71,"f",1],[9215,18,"f",0],[9249,21,"f",1],[9338,2,"s",0],[9341,6,"s",0],[9507,5,"s",0],[9525,78,"s",13],[9629,5,"s",0],[9987,3,"s",0],[10476,25,"f",0],[10478,17,"f",1],[10511,24,"f",1],[10541,2,"f",0],[10567,37,"f",1],[10568,7,"f",0]]; D.closes = [[440,"m",7640,"fix (resubmitted): `Failed to write init script` whe"],[528,"m",7454,"feat(project): resolve TargetFramework from subdirs "],[759,"m",7614,"fix(config): recover theme from cache when session c"],[761,"m",7641,"docs: add acdtrx as a contributor for code"],[839,"m",7642,"Next"],[1569,"m",7646,"chore(deps): bump TriPSs/conventional-changelog-acti"],[1574,"m",7647,"chore(deps): bump golang.org/x/crypto from 0.48.0 to"],[1864,"m",7648,"fix(streaming): stop the serve daemon on shell exit"],[1867,"m",7645,"chore(deps): bump the minor-patch group across 1 dir"],[1888,"c",7048,"feat(segments): add DVC source control support"],[1888,"m",7650,"feat(segments): add DVC source control support"],[1896,"i",6822,"[Feature request] Add support to `dvc` source contro"],[1896,"i",7636,"Using the chained four-character unicode format brea"],[1896,"i",7643,"OMP hangs when trying to exit the terminal"],[1896,"m",7649,"Next"],[2216,"i",5312,"Access .Ahead and .Behind of the push-remote in the "],[2802,"m",7651,"feat(shell): support vimode segment in fish"],[2803,"m",7656,"fix(init): recover when the init script is held open"],[2806,"c",7644,"feat: allow setting custom pwd, execution time and s"],[2809,"m",7455,"feat(options): template expressions in segment optio"],[2819,"m",7655,"feat: render prompts from a template data file"],[2820,"i",7654,"Updating from to 29.22.0 to 29.22.1 causes Access De"],[3397,"i",7653,"streaming breaks stderr on zsh - regression from 29."],[3397,"m",7659,"next"],[3660,"i",7168,"Enhance terraform/tofu segment version detection wit"],[3660,"m",7652,"feat(segment): detect terraform/tofu version from te"],[3877,"m",7658,"chore(deps): bump the minor-patch group in /src with"],[3884,"i",7660,"zsh init with streaming prints coprocess job notific"],[3884,"m",7661,"next"],[4860,"m",7662,"next"],[5211,"m",7657,"feat(segment): Add Orthodox Calendar Segment"],[5215,"i",7379,"Support progress for more terminals"],[5215,"i",7581,"Fallback template for segments when Enabled() == fal"],[5215,"m",7542,"Support configurable terminals for OSC 9 progress se"],[5594,"m",7663,"next"],[6402,"i",7399,"project segment: show TargetFramework from .csproj w"],[6403,"i",7187,"Gradle"],[6404,"i",7558,"Upload the oh my posh msix into the Microsoft Store"],[6571,"m",7665,"feat(transient): support right-aligned template"],[8163,"m",7369,"Feat/transient show interrupt"],[8169,"m",7671,"docs: add kovjanos as a contributor for code, and do"],[8175,"m",7669,"fix(ci): refresh APM lockfile on Linux"],[8191,"c",7360,"Feat/zsh transient multiline"],[8191,"i",4822,"Allow transient prompt alignment (segments or left/r"],[8191,"i",7121,"Add support for Yash (Yet another shell)"],[8191,"i",7668,"Include go vendor deps archive in github releases"],[8191,"i",7670,"project segment: resolve .NET TargetFramework from D"],[8191,"m",7666,"next"],[8768,"m",7673,"chore(deps): bump softprops/action-gh-release from 3"],[9113,"m",7316,"refactor(config): use generic cache for SegmentWrite"],[9114,"m",7672,"feat(transient): support right template in fish"],[9114,"m",7674,"docs: add Mertozturkk as a contributor for code"],[9119,"i",5782,"feat: allow full prompt config for transient prompt"],[9119,"i",7664,"MSI installer flips the user Path registry value kin"],[9120,"i",6804,"Add Support for Right-Aligned Timestamp Printed Afte"],[9141,"i",5438,"Show current mode in ZSH Vi mode"],[9142,"i",7243,"Ability to use templating on segment options"],[9337,"i",5992,"Zsh-vi-mode incompability"],[9337,"i",7536,"[Feature Request] Include cmdline_url= parameter on "],[9337,"m",7675,"Next"],[9340,"c",7383,"feat: add terminal_features config for user-configur"],[9524,"m",7676,"fix(git): handle worktree gitdir files without trail"],[9525,"m",7677,"docs: add ceilidhboy as a contributor for code"],[10208,"m",7681,"chore(deps): bump actions/setup-node from 6.4.0 to 7"],[10472,"i",5442,"More fine-grained controls over color cycle"],[10472,"i",6334,"Path segment: Multiple non-consecutive capture group"],[10472,"i",7531,"[Feature request] Multi-level extends / proxy config"],[10472,"i",7594,"project segment - multiple project files"],[10472,"m",7678,"Next"],[10556,"i",7572,"Allow palette colors to use Go templates"],[10556,"i",7679,"Option to invalidate last-command metadata after sub"],[10556,"m",7682,"Next"],[10593,"m",7324,"feat(segments): add Uno Platform support"],[10593,"m",7683,"docs: add ajpinedam as a contributor for code, desig"],[10626,"i",7427,"repaint_prompt function for other shells"],[10626,"m",7684,"feat(segment): add Uno Platform support"]]; D.commits = [759,759,759,822,1387,1564,1570,1865,1876,1916,2308,2309,2309,2396,2741,2815,2823,2823,2823,3004,3269,3360,3660,3780,3781,3840,3840,3841,3877,4823,4823,4854,4859,5053,5056,5143,5144,5155,5155,5155,5166,5166,5166,5167,5200,5201,5506,5506,5507,6414,6414,6414,6414,6431,6431,6459,6528,7353,7974,7974,7974,7974,7980,7980,7980,7980,7980,8164,8165,8176,8176,8185,8216,8216,8216,8231,8231,8231,8231,8673,8764,9071,9083,9094,9094,9094,9095,9113,9113,9168,9168,9170,9212,9212,9212,9218,9218,9218,9225,9225,9230,9232,9232,9233,9269,9269,9270,9376,9376,9522,9522,9522,9522,9524,9524,9563,9563,9563,9564,9564,9564,9565,9565,9566,9566,9566,9567,9568,9568,9568,9568,9595,9595,9595,9596,9596,9596,9597,9597,9642,9642,9642,9660,9666,10204,10495,10495,10495,10495,10495,10503,10511,10529,10529,10529,10529,10530,10540,10540,10540,10545,10548,10572,10572,10584,10584,10585,10593,10593,10593,10621];
+  var root = document.getElementById('fable-week');
+  var $ = function (id) { return document.getElementById(id); };
+  var elN = $('fw-n'), elNl = $('fw-nl'), elClock = $('fw-clock'), elLog = $('fw-log'),
+      elClosed = $('fw-closed'), elSess = $('fw-sess'), elSub = $('fw-sub'), elCom = $('fw-com');
+
+  // build session cells grouped by day
+  var daysBox = $('fw-days'), cells = [];
+  for (var d = 0; d < 8; d++) {
+    var row = document.createElement('div'); row.className = 'fw-day';
+    row.innerHTML = '<em>' + D.days[d].toLowerCase() + '</em><span class="fw-cells"></span>';
+    var wrap = row.lastChild;
+    D.sessions.forEach(function (s) {
+      if (Math.floor(s[0] / 1440) !== d) return;
+      var c = document.createElement('span'); c.className = 'fw-c';
+      var hh = Math.floor((s[0] % 1440) / 60), mm = s[0] % 60;
+      c.title = D.days[d] + ' ' + (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm +
+        ' · ' + (s[2] === 'f' ? 'fable 5' : 'sonnet 5') + ' · ~' + s[1] + ' min active' +
+        (s[3] ? ' · ' + s[3] + ' subagents' : '');
+      wrap.appendChild(c);
+      cells.push({ el: c, s: s });
+    });
+    daysBox.appendChild(row);
+  }
+
+  // per-day bars
+  var barsBox = $('fw-daybars'), bars = [], maxDay = 1;
+  var perDay = [0, 0, 0, 0, 0, 0, 0, 0];
+  D.closes.forEach(function (c) { perDay[Math.floor(c[0] / 1440)]++; });
+  perDay.forEach(function (v) { if (v > maxDay) maxDay = v; });
+  for (var b = 0; b < 8; b++) {
+    var r = document.createElement('div'); r.className = 'fw-row';
+    r.innerHTML = '<em>' + D.days[b].toLowerCase() + '</em><span class="fw-bar"><i></i></span><u>0</u>';
+    barsBox.appendChild(r);
+    bars.push({ fill: r.querySelector('i'), num: r.querySelector('u') });
+  }
+
+  var icons = { i: '<span class="i">✓</span>', m: '<span class="m">⇈</span>', c: '<span class="c">✕</span>' };
+  var lastFeedCount = -1;
+
+  function render(t) {
+    // clock
+    var d = Math.min(7, Math.floor(t / 1440)), hh = Math.floor((t % 1440) / 60), mm = Math.floor(t % 60);
+    elClock.textContent = ['Wed, Jul 8', 'Thu, Jul 9', 'Fri, Jul 10', 'Sat, Jul 11', 'Sun, Jul 12', 'Mon, Jul 13', 'Tue, Jul 14', 'Wed, Jul 15'][d] +
+      ', ' + (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm;
+    // closes
+    var done = 0;
+    while (done < D.closes.length && D.closes[done][0] <= t) done++;
+    var left = D.closes.length - done;
+    elN.textContent = left; elClosed.textContent = done;
+    elN.style.color = left === 0 ? '#7ec98f' : '';
+    elNl.textContent = left === 0 ? 'backlog items left · inbox zero' : 'backlog items left';
+    if (done !== lastFeedCount) {
+      lastFeedCount = done;
+      var html = '';
+      for (var i = Math.max(0, done - 12); i < done; i++) {
+        var c = D.closes[i];
+        html += '<div>' + icons[c[1]] + ' <span class="t">#' + c[2] + '</span> ' +
+          String(c[3]).replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</div>';
+      }
+      elLog.innerHTML = html;
+    }
+    // day bars
+    var per = [0, 0, 0, 0, 0, 0, 0, 0];
+    for (var j = 0; j < done; j++) per[Math.floor(D.closes[j][0] / 1440)]++;
+    for (var k = 0; k < 8; k++) {
+      bars[k].fill.style.width = (per[k] / maxDay * 100) + '%';
+      bars[k].num.textContent = per[k];
+    }
+    // sessions
+    var started = 0, subs = 0;
+    cells.forEach(function (c) {
+      var s = c.s;
+      if (t < s[0]) { c.el.className = 'fw-c'; return; }
+      started++; subs += s[3];
+      c.el.className = t < s[0] + s[1] ? 'fw-c on ' + s[2] : 'fw-c ' + s[2];
+    });
+    elSess.textContent = started; elSub.textContent = subs;
+    // commits
+    var com = 0;
+    while (com < D.commits.length && D.commits[com] <= t) com++;
+    elCom.textContent = com;
+  }
+
+  var raf = null;
+  function play() {
+    if (raf) cancelAnimationFrame(raf);
+    var DUR = 18000, t0 = performance.now();
+    function step(now) {
+      var p = Math.min(1, (now - t0) / DUR);
+      render(p * D.end);
+      if (p < 1) raf = requestAnimationFrame(step); else raf = null;
+    }
+    raf = requestAnimationFrame(step);
+  }
+
+  render(D.end); // final state by default
+  root.fwRender = render; root.fwEnd = D.end;
+  $('fw-btn').addEventListener('click', play);
+  if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if ('IntersectionObserver' in window) {
+      var played = false;
+      new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !played) { played = true; play(); obs.disconnect(); }
+        });
+      }, { threshold: 0.35 }).observe(root);
+    }
+  }
+})();
+</script>
+</section>
